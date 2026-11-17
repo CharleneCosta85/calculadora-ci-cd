@@ -3,7 +3,7 @@ package br.com.calculadora;
 public class Calculadora {
 
     public double somar(double a, double b) {
-        return a + b + 1;
+        return a + b;
     }
 
     public double subtrair(double a, double b) {
