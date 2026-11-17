@@ -1,0 +1,69 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Executar testes
+        run: mvn clean test
+
+      - name: Gerar JAR
+        run: mvn package -DskipTests
+
+      - name: Salvar JAR como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculadora
+          path: target/*.jar
+
+  deploy:
+    needs: build-test
+    if: github.event_name == 'push'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Gerar JAR
+        run: mvn package -DskipTests
+
+      - name: Criar GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          files: target/*.jar
+          generate_release_notes: true
