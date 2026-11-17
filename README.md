@@ -9,7 +9,7 @@ Desenvolver uma aplicação Java simples e configurar um pipeline automatizado q
 - Execute os testes automaticamente;
 - Execute o build da aplicação;
 - Valide Pull Requests para a branch `main`;
-- Impessa a integração quando os testes falharem;
+- Impeça a integração quando os testes falharem;
 - Execute a entrega automaticamente após o merge na `main`;
 - Gere uma **GitHub Release** contendo o arquivo `.jar`.
 
@@ -118,7 +118,7 @@ Corrigir   Merge
             ↓
        GitHub Actions
             ↓
-        GitHub Release
+       GitHub Release
             ↓
            .jar
 ```
